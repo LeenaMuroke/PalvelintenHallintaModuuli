@@ -57,5 +57,46 @@ Testasin herrakoneelta käsin minionkonetta antamalla Saltkäskyn minioneille
     vagrant@herra:~$ sudo salt '*' cmd.run "hostname -I"
     minioni:
         10.0.2.15 192.168.88.102
-        
+
+Eli samalla tavalla tulen tekemään myös minionkoneita ja niiden yhdistämisiä herrakoneeseen.
+Tulen testaamaan moduuliani useamman kerran tyhjällä minionkoneella. 
+Herrakonetta en tule tekemään uudestaan.
+
+## Pakettien asennukset minionille skriptin avulla
+
+Haluan aloittaa moduulin asentamalla tarvittavat paketit skriptin avulla,
+jotta pääsen sitäkin harjoittelemaan. Loin aluksi kansion /srv/salt/, jonne rupean laittamaan Salt tilan määrityksiä.
+Kansioon skripteille tilan alkuskriptit `sudo mkdir alkuskriptit` ja loin alkuskriptit.sh tiedoston `micro alkuskriptit.sh`, 
+johon kirjasin skriptit tarvittavien pakettin asennukselle ja echolla kerrotaan terminaalissa mitä asennetaan.
+
+KUVAKAAPPAUS TÄHÄN
+
+Tilan sisälle loin init.sls tiedoston `sudo micro init.sls`, johon alan määritellä tilan asetuksia.
+Kirjoitin sisälle alla kuvassa olevat tiedot. Eli luodaan kansio koneen bin-hakemistoon, jotta skriptejä 
+voi ajaa mistä tahansa koneella ollessa. Source tarkoittaa, että skriptitiedosto kopioidaan herrakoneen salt hakemiston 
+alkuskriptit tilasta ja tiedosto alkuskriptit.sh on se joka kopioidaan minionille.
+Mode viittaa oikeuksiin, millä skriptejä pystyy ajamaan.
+
+KUVA TÄHÄN
+
+Ajoin tilan herrakoneelta minionille `sudo salt '*' state.apply alkuskriptit`.
+Tilan ajo onnistui.
+
+KUVA TÄHÄN
+
+Kävin minion koneella katsomassa /usr/bin/ hakemistosta ja catilla luin alkuskriptitiedoston.
+Sehän oli sinne tullut! Koitin ajaa skriptiedoston `bash alkuskriptit`, mutta ei onnistunut.
+Tiedostonhan pitää olla .sh päätteinen, jotta terminaali osaa lukea sen shellskriptinä.
+Kävin herrakoneella vaihtamssa Salt tilasta tiedoston .sh päätteiseksi ja ajoin tilan uudestaan. 
+Tämä loi uuden tiedoston alkuskriptit.sh. Tämänkään jälkeen tila ei toiminut, syynä echolle olin laittanut ().
+Tiedä mistä moinen aivopieru. Kävin taas muokkaamassa herrakoneelta alkuskriptit.sh tiedostoa ja ajoin koko tilan uudelleen.
+
+Tämän jälkeen skriptien ajo minionkoneella onnistui! Paitsi MariaDB,
+joka ei yllättänyt. Tämä on minulle uusi ja todennäköisesti väärällä nimellä, sillä en kyseiseen tietokantaan ole vielä perehtynyt.
+Tarkisin minionilla, että Apachen ja Pythonin asetushakemistot löytyy.
+
+
+
+
+
   
