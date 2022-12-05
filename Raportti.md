@@ -179,4 +179,40 @@ Tämän jälkeen ajoin apachetilan minion2 koneelleni `sudo salt '*' state.apply
     Hello World
 
 Seuraavaksi lähdin käyttäjän kotisivujen konfiguroinnin kimppuun.
+Ensiksi tarkistin curlin avulla käyttäjän kotisivun nykyisen tilan 
+`curl localhost/~vagrant`. HTML-koodista pystyy päättelemään, ettei saa yhteyttä.
+
+KOODI TÄHÄN
+
+Samalla tajusin, ettei koneelle ole asennettuna palomuuria. Lisäsin palomuurin asennuksen alkuskripteihin, 
+ja sallin http liikenteen portille 80. Minionille asensin nämä nyt manuaalisesti samalla tavalla.
+
+KOODI TÄHÄN
+
+Seuraavaksi loin apachetilaan käyttäjän kotisivuille hakemiston public_html ja sen sisään
+itse kotisivutiedoston index.html. Index.html kirjoitin pelkän "Hello World". Myöhemmin toimiessa tämän voisi vaihtaa
+validiksi html-sivun pohjaksi. Muokkasin apachetilan init.sls, jotta samat tiedot luodaan minionillekin.
+Samalla sallin käyttäjien kotisivut, sekä että, apache käynnistyy uudelleen muutosten jälkeen.
+
+KOODI TÄHÄN
+
+Yritin ajaa herralta tilan minionille, mutta mikään ei muuttunut. Yritin kirjautua ulos.
+Samalla tajusin, etten palomuurissa ole sallinut ssh yhteyttä. Eli enpä pääse enää sen avulla takaisin koneelle.
+Lisäsin alkuskripteihin SSH-yhteyden sallimisen portille 22. Tuhosin minionin useamman kerran tilojen ajamisien välissä lukuisten virheiden takia.
+Lopulta kuitenkin sain palomuurit ja apachen kotisivut toimimaan seuraavanlaisesti:
+
+Alkuskriptit:
+
+TÄHÄN
+
+Apachen init.sls:
+
+TÄHÄN
+
+Minionikoneella 
+ 
+
+
+
+
 
