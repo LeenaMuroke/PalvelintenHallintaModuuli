@@ -46,5 +46,16 @@ Hyväksyin herrakoneella minionkoneelta tulleen avaimen ottaa yhteyttä `sudo sa
 Testasin herrakoneelta käsin minionkonetta antamalla Saltkäskyn minioneille 
 `sudo salt '*' cmd.run "hostname -I"`. Minioni vastasi, eli Salt yhteys toimii koneiden välillä.
 
-
-
+    vagrant@herra:~$ hostname -I
+    10.0.2.15 192.168.88.101
+    vagrant@herra:~$ sudo salt-key -A
+    The following keys are going to be accepted:
+    Unaccepted Keys:
+    minioni
+    Proceed? [n/Y] y
+    Key for minion minioni accepted.
+    vagrant@herra:~$ sudo salt '*' cmd.run "hostname -I"
+    minioni:
+        10.0.2.15 192.168.88.102
+        
+  
