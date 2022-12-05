@@ -18,7 +18,7 @@ sudo ufw allow 22/tcp
 echo "Sallitaan yhteys Saltin porttiin 4505"
 sudo ufw allow 4505/tcp
 
-echo "Sallitaan Saltin portille 4506"
+echo "Sallitaan yhteys Saltin portille 4506"
 sudo ufw allow 4506/tcp
 
 echo "Asennetaan micro editointiohjelma"
@@ -29,5 +29,4 @@ sudo apt-get install curl -y
 
 echo "Asennetaan PostgreSQL tietokanta"
 sudo apt-get install postgresql -y
-
 
