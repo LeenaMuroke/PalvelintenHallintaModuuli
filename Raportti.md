@@ -142,15 +142,15 @@ Tarkisin minionilla, että Apachen ja Pythonin asetushakemistot löytyy.
     vagrant@minioni:/etc/python3$ ls
     debian_config
 
-Lopuksi kävin vielä korjaamassa kirjoitusvirheitä ja lisäsin asennettavaksi myös micron. Vaihdoin samalla tietokannan PostgreSQL, sillä se on itselle tutumpi. Eli lopullinen alkuskriptititiedosto näyttää tältä:
+Lopuksi kävin vielä korjaamassa kirjoitusvirheitä ja lisäsin asennettavaksi myös micron. Vaihdoin samalla tietokannan PostgreSQL, sillä se on itselle tutumpi. Eli lopullinen alkuskriptititiedosto tällä hetkellä näyttää tältä:
 
 ![image](https://user-images.githubusercontent.com/111494018/205601643-47a813c4-1067-4a58-a82d-5cb8112727ad.png)
 
-Ja init.sls tiedosto näyttää tältä:
+Ja init.sls tiedosto tällä hetkellä näyttää tältä:
 
 ![image](https://user-images.githubusercontent.com/111494018/205601459-bd0a1833-3b5c-4f04-8591-fdc6ffff48d5.png)
 
-Nyt tuhosin minion koneeni ja asensin uuden minionin ja testasin tilan ja skriptien ajoa tyhjälle minion2 koneelle. Ei tullut ongelmia ja ajokin näytti siistimmältä! Möys PostrgeSQL asentui.
+Nyt tuhosin minion koneeni ja asensin uuden minionin ja testasin tilan ja skriptien ajoa tyhjälle minion2 koneelle. Ei tullut ongelmia ja ajokin näytti siistimmältä! Myös PostrgeSQL asentui.
 
     vagrant@minioni2:~$ cd /etc/postgresql
     vagrant@minioni2:/etc/postgresql$ ls
@@ -164,5 +164,19 @@ Nyt tuhosin minion koneeni ja asensin uuden minionin ja testasin tilan ja skript
     debian_config
 
 
+## Apache2 konfigurointi
 
+Seuraavaksi lähden tarkemmin muokkaamaan Apachen asennusta. Yritin minion2 koneella tarkastaa curlin avulla Apachen oletussivua `curl localhost`, mutta curlia ei ole asennettuna. Kävin sen lisäämässä herrakoneen alkuskripteihin mukaan asentumaan, jotta ensi kerralla se asentuu automaattisesti. Nyt asensin curlin tähän koneelle manuaalisesti. Nyt `curl localhost` näyttää pitkää html koodiriviä Apachen oletussivuun. Itse nettiselaimella en pysty sivua näyttämään, sillä Vagrant virtuaalikoneessa on vain komentokehote, ei graafista käyttöliittymää. Seuraavaksi pitäisikin herrakoneelta lähteä määrittämään Apachen oletussivun muutoksia ja muokata oletussivu. Lisäksi käyttäjän kotisivut olisi hyvä saada toimimaan.
+
+Loin herrakoneen srv/salt hakemistoon apachetilan `sudo mkdir apache`, jonka sisälle loin init.sls asetustiedoston `sudo micro init.sls`, jonka sisälle asetukset määritellään. Apachen oletussivu löytyy aina paikasta ja tiedostosta /var/wwww/html/index.html. 
+Joten lähdin tilan avulla tuota index.html tiedostoa muuttamaan file.managed funktion avulla. Lisäsin tiedostoon alla olevat tiedot. Eli muokataan jo löytyvää index.html tiedostoa, muokkaamalla sen sisällöksi "Hello World". 
+
+KUVA TÄHÄN
+
+Tämän jälkeen ajoin apachetilan minion2 koneelleni `sudo salt '*' state.apply apache`. Tilan ajo onnistui Saltin mukaan ilmon ongelmia. Kävin minion2 koneella testaamssa localhostin uudestaan `curl localhost` ja localhost oli nyt muuttunut "Hello World", eli Apachen oletussivu ei ole enää näkyvissä. Eli tältä osin apachetila on kunnossa.
+
+    vagrant@minioni2:~$ curl localhost
+    Hello World
+
+Seuraavaksi lähdin käyttäjän kotisivujen konfiguroinnin kimppuun.
 
