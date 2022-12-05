@@ -8,7 +8,6 @@ sudo apt-get install ufw -y
 
 echo "Laitetaan palomuuri päälle"
 sudo ufw enable
-y
 
 echo "Sallitaan HTTP-liikenne portille 80"
 sudo ufw allow 80/tcp
@@ -28,11 +27,7 @@ sudo apt-get install micro -y
 echo "Asennetaan curl ohjelma nettisivujen testaukseen"
 sudo apt-get install curl -y
 
-echo "Asennetaan Apache webpalvelin"
-sudo apt-get install apache2 -y
-
 echo "Asennetaan PostgreSQL tietokanta"
 sudo apt-get install postgresql -y
 
-echo "Asennetaan Python ohjelmointikieli"
-sudo apt-get install python3 -y
+
