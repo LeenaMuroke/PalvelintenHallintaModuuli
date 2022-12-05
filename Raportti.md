@@ -62,7 +62,7 @@ Eli samalla tavalla tulen tekemään myös minionkoneita ja niiden yhdistämisi�
 Tulen testaamaan moduuliani useamman kerran tyhjällä minionkoneella. 
 Herrakonetta en tule tekemään uudestaan.
 
-## Pakettien asennukset minionille skriptin avulla
+## Ohjelmian asennukset minionille skriptin avulla
 
 Haluan aloittaa moduulin asentamalla tarvittavat paketit skriptin avulla,
 jotta pääsen sitäkin harjoittelemaan. Loin aluksi kansion /srv/salt/, jonne rupean laittamaan Salt tilan määrityksiä.
