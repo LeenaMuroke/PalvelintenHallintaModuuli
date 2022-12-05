@@ -6,6 +6,9 @@ sudo apt-get update
 echo "Asennetaan micro editointiohjelma"
 sudo apt-get install micro -y
 
+echo "Asennetaan curl ohjelma nettisivujen testaukseen"
+sudo apt-get install curl -y
+
 echo "Asennetaan Apache webpalvelin"
 sudo apt-get install apache2 -y
 
