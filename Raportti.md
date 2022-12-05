@@ -171,7 +171,7 @@ Seuraavaksi lähden tarkemmin muokkaamaan Apachen asennusta. Yritin minion2 kone
 Loin herrakoneen srv/salt hakemistoon apachetilan `sudo mkdir apache`, jonka sisälle loin init.sls asetustiedoston `sudo micro init.sls`, jonka sisälle asetukset määritellään. Apachen oletussivu löytyy aina paikasta ja tiedostosta /var/wwww/html/index.html. 
 Joten lähdin tilan avulla tuota index.html tiedostoa muuttamaan file.managed funktion avulla. Lisäsin tiedostoon alla olevat tiedot. Eli muokataan jo löytyvää index.html tiedostoa, muokkaamalla sen sisällöksi "Hello World". 
 
-KUVA TÄHÄN
+![image](https://user-images.githubusercontent.com/111494018/205614251-f527ec5b-9150-4d33-bcd6-7eba6ed1dfdd.png)
 
 Tämän jälkeen ajoin apachetilan minion2 koneelleni `sudo salt '*' state.apply apache`. Tilan ajo onnistui Saltin mukaan ilmon ongelmia. Kävin minion2 koneella testaamssa localhostin uudestaan `curl localhost` ja localhost oli nyt muuttunut "Hello World", eli Apachen oletussivu ei ole enää näkyvissä. Eli tältä osin apachetila on kunnossa.
 
