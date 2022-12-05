@@ -249,9 +249,33 @@ Apachen oletussivu on päivittynyt, samoiten käyttäjän kotisivut.
     vagrant@minioni4:~$ curl localhost/~vagrant/index.html
     Hello World
 
+## Tietokanta PostgreSQL
+
+Lennosta vaihdoin tietokannaksi PostgreSQL, koska se on itselle tutumpi tietokanta. 
+Loin tälle oman postgresql-nimisen tilan Salttiin, jonka sisälle loin init.sls tiedoston. 
+Sinne määritin postgreSQL asentuvaksi pkg.installed funktioll.  
+
+INITSLS TIEDOSTON SISÄLTÖ TÄHÄN
+
+Poistin postgresqln minionilta `sudo apt-get purge postgre*` ja ajoin postgresql tilan herralta minionille.
+
+Sain kuitenkin sellaisen ilmoituksen, mitä en osannut debugata. 
+
+FAIL TÄHÄN
+
+Päätin vaihtaa tietokantaa MariaDB:ksi, jotta saan jonkun tietokannan asennettua. 
+Poistin postgretilan, ja loin tilalle mariadb tilan. Sain kuitenkin samanlaisen ilmoituksen 
+kuin Postgren kohdalla. Sama ilmoitus tuli myös paikallisesti ajettaessa tilaa herralle. 
+Päätin tässä kohti Postgren asentumaan pelkästä alkuskriptista ilman muita konfiguraatioita.
+Poistin mariadb tilan.
+
 ## Python ohjelmointikieli
 
-Itse paketinasennus python ohjelmointikielestä on jo suoritettu alkuskriptien ajon aikana. En tässä moduulissa tee enemää konfiguraatioita pythonille, sitä saakoon käyttää missä tarvitsee. Esimerkiksi omien skriptien tekemisessä, tai omissa ohjelmissa, joita pythonilla koodaa. Kävin kuitenkin testaamassa, että python on asentunut. Komennolla `python3` pääsee ajamaan pythonia. Kokeilin helppoja juttuja, kuten ruudulle printtaamista, perus matematiikkaa. Kaikki toimi! Eli python on asentunut onnistuneesti ja valmiina käyttöön.
+Itse paketinasennus python ohjelmointikielestä on jo suoritettu alkuskriptien ajon aikana. 
+Kävin  testaamassa, että python on asentunut. 
+Komennolla `python3` pääsee ajamaan pythonia. 
+Kokeilin helppoja juttuja, kuten ruudulle printtaamista, perus matematiikkaa. 
+Kaikki toimi! 
 
     vagrant@minioni4:~$ python3
     Python 3.9.2 (default, Feb 28 2021, 17:03:44)
@@ -264,8 +288,42 @@ Itse paketinasennus python ohjelmointikielestä on jo suoritettu alkuskriptien a
     >>> f"Moikkamoi {1+5}"
     'Moikkamoi 6'
     >>>
-    
-## Tietokanta PostgreSQL
 
-Lennosta vaihdoin tietokannaksi PostgreSQL, koska se on itselle tutumpi tietokanta. PostgreSQL asentuu moduulissa minionkoneelle jo alkuskriptien aikana. Tähän tarvitsisi konfigurointia, että luo käyttäjän, jotta tietokantaan pääsee sisälle. 
+
+Koska tietokannan asennus tilana epäonnistui, päätin asentaa moduulissa python kielen tilana.
+Jotta voin tiloilla harjoitella myös top.sls käyttöä, joka ajaa useamman tilan samanaikaisesti.
+Eli loin Saltiin python tilan, ja sen init.sls tiedostoon määritin pkg.installed funktiolla asentavan python3 paketin.
+
+PYTHON TILA TÄHÄN
+
+Poistin minionkoneelta pythonin `sudo apt-get purge python*` ja 
+ajoin herralta python tilan minionille. Tilan ajo ei kuitenkaan onnistunut.
+
+ILMOITUS TÄHÄN
+
+Mitkään muutkaan tilanajot ei enää onnistunut, ja päättelin, että olin tuhonnut jo liikaa asioita.
+Herra ei enää saanut yhteyttä minioniin. Tein uuden virtuaalikoneen, ja salt-minionia asentaessa siihen tajusin asennusteksteistä,
+että python2 asentuu automaattisesti sen yhteydessä. Salt-minion asennuksen jälkeen testasinkin pythonia, ja se oli jo toiminnassa.
+Jätin kuitenkin luomani python tilan, jotta voin harjoitella top.sls tilan käyttöä apachen ja pythontilan kanssa.
+Testasinkin ajaa herralta python tilan minionille, ja sain ilmoituksen paketin olevan jo asennettu.
+
+PYTHON ASENNUS TILA TÄHÄN
+
+## Muutokset Apacheen
+
+Vaihdoin asennuksen tapahtumaan apachetilan init.sls tiedostoon pkg.installed funktiolla.
+Poistin asennuksen alkuskripteistä.
+
+## Top.sls tila
+
+Halusin niputtaa yhteen apachen ja pythontilan, jotta voin harjoitella top.sls tilan käyttöä.
+Tällöin riittää ajaa vain yksi komento, joka asentaa molemmat tilat.
+Loin ensiksi saltiin tiedoston top.sls. Sen sisään määritin, että kun ajetaan kaikki '*', niin ajetaan apavhe ja pythontilat.
+
+TOPLSLS SISÄLTÖ TÄHÄN
+
+Ajoin Saltista herralla pelkän `sudo salt '*' state.apply`, eli en määritellyt mitä tilaa ajetaan.
+Näin ollen se luki top.sls tiedostosta mitä halutaan ajaa.
+Apache ja python tilat molemmat ajettiin saman aikaisesti. Tosin muutoksia ei tullut, sillä molemmat olen jo erikseen ehtinyt testata.
+
 
