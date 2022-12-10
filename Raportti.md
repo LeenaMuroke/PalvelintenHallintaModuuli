@@ -249,8 +249,19 @@ Apachen oletussivu on päivittynyt, samoiten käyttäjän kotisivut.
     vagrant@minioni4:~$ curl localhost/~vagrant/index.html
     Hello World
 
+## Python ohjelmointikieli
 
+Itse paketinasennus python ohjelmointikielestä on jo suoritettu alkuskriptien ajon aikana. En tässä moduulissa tee enemää konfiguraatioita pythonille, sitä saakoon käyttää missä tarvitsee. Esimerkiksi omien skriptien tekemisessä, tai omissa ohjelmissa, joita pythonilla koodaa. Kävin kuitenkin testaamassa, että python on asentunut. Komennolla `python3` pääsee ajamaan pythonia. Kokeilin helppoja juttuja, kuten ruudulle printtaamista, perus matematiikkaa. Kaikki toimi! Eli python on asentunut onnistuneesti ja valmiina käyttöön.
 
-
-
+    vagrant@minioni4:~$ python3
+    Python 3.9.2 (default, Feb 28 2021, 17:03:44)
+    [GCC 10.2.1 20210110] on linux
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> print("Hello")
+    Hello
+    >>> 5+5
+    10
+    >>> f"Moikkamoi {1+5}"
+    'Moikkamoi 6'
+    >>>
 
