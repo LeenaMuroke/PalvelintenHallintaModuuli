@@ -182,24 +182,41 @@ Seuraavaksi lähdin käyttäjän kotisivujen konfiguroinnin kimppuun.
 Ensiksi tarkistin curlin avulla käyttäjän kotisivun nykyisen tilan 
 `curl localhost/~vagrant`. HTML-koodista pystyy päättelemään, ettei saa yhteyttä.
 
-KOODI TÄHÄN
+    Kvagrant@minioni2:~$ curl localhost/~vagrant
+    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+    <html><head>
+    <title>404 Not Found</title>
+    </head><body>
+    <h1>Not Found</h1>
+    <p>The requested URL was not found on this server.</p>
+    <hr>
+    <address>Apache/2.4.54 (Debian) Server at localhost Port 80</address>
+    </body></html>
 
 Samalla tajusin, ettei koneelle ole asennettuna palomuuria. Lisäsin palomuurin asennuksen alkuskripteihin, 
 ja sallin http liikenteen portille 80. Minionille asensin nämä nyt manuaalisesti samalla tavalla.
-
-KOODI TÄHÄN
 
 Seuraavaksi loin apachetilaan käyttäjän kotisivuille hakemiston public_html ja sen sisään
 itse kotisivutiedoston index.html. Index.html kirjoitin pelkän "Hello World". Myöhemmin toimiessa tämän voisi vaihtaa
 validiksi html-sivun pohjaksi. Muokkasin apachetilan init.sls, jotta samat tiedot luodaan minionillekin.
 Samalla sallin käyttäjien kotisivut, sekä että, apache käynnistyy uudelleen muutosten jälkeen.
 
-KOODI TÄHÄN
+    /etc/apache2/mods-enabled/userdir.conf:
+     file.symlink:
+       - target: ../mods-available/userdir.conf
+    /etc/apache2/mods-enabled/userdir.load:
+     file.symlink:
+       - target: ../mods-available/userdir.load
+    apache2service:
+     service.running:
+       - name: apache2
+       - watch:
+         - file: /etc/apache2/mods-enabled/userdir.conf
+         - file: /etc/apache2/mods-enabled/userdir.load
 
 Yritin ajaa herralta tilan minionille, mutta mikään ei muuttunut. Yritin kirjautua ulos.
 Samalla tajusin, etten palomuurissa ole sallinut ssh yhteyttä. Eli enpä pääse enää sen avulla takaisin koneelle.
-Lisäsin alkuskripteihin SSH-yhteyden sallimisen portille 22. Tuhosin minionin useamman kerran tilojen ajamisien välissä lukuisten virheiden takia.
-Lopulta kuitenkin sain palomuurit ja apachen kotisivut toimimaan seuraavanlaisesti:
+Lisäsin alkuskripteihin SSH-yhteyden sallimisen portille 22. Tuhosin minionin useamman kerran tilojen ajamisien välissä lukuisten virheiden takia. Lopulta kuitenkin sain palomuurit ja apachen kotisivut toimimaan seuraavanlaisesti. Lisäsin esim. palomuuriin sallitut portit 4505 ja 4506, joita Salt käyttää. Loin hakemiston ja tiedoston kotisvuille "Hello World" sisällöllä. Kyseiset tiedostot tulevat käyttäjän kotihakemistoon, joita voi myöhemmin itse muokata haluamanlaisiksi.
 
 Alkuskriptit:
 
