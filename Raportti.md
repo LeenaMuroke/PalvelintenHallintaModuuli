@@ -16,8 +16,8 @@ Virtuaalikoneet:
 
 ## Moduulin aihe
 
-Muiden moduuleista innostuneena, päätän lähteä yrittämään LAMP-moduulia, jonka avulla konfiguroidaan uusia koneita.
-LAMP tulee sanoista L = Linux käyttöjärjstelmä, A = Apache webpalvelin, M = MariaDB tietokanta ja P = Python ohjelmointikieli.
+Muiden moduuleista innostuneena, päätän lähteä yrittämään LAPP-moduulia, jonka avulla konfiguroidaan uusia koneita.
+LAMP tulee sanoista L = Linux käyttöjärjstelmä, A = Apache webpalvelin, P = PostgreSQL tietokanta (raportissa kokeiltu myös MariaDB) ja P = Python ohjelmointikieli.
 Moduulia tullaan ajamaan Saltin avulla herra ja minionkoneiden välillä. 
 Eli moduuli asentaa tarvittavat välineet aloittaa tekemään omia koodaustehtäviä. 
 Valitsin tämän, sillä koen tästä olevan itselle hyötyä omiin projekteihini. 
@@ -264,4 +264,8 @@ Itse paketinasennus python ohjelmointikielestä on jo suoritettu alkuskriptien a
     >>> f"Moikkamoi {1+5}"
     'Moikkamoi 6'
     >>>
+    
+## Tietokanta PostgreSQL
+
+Lennosta vaihdoin tietokannaksi PostgreSQL, koska se on itselle tutumpi tietokanta. PostgreSQL asentuu moduulissa minionkoneelle jo alkuskriptien aikana. Tähän tarvitsisi konfigurointia, että luo käyttäjän, jotta tietokantaan pääsee sisälle. 
 
