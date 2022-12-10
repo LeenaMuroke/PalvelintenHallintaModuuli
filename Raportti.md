@@ -203,14 +203,35 @@ Lopulta kuitenkin sain palomuurit ja apachen kotisivut toimimaan seuraavanlaises
 
 Alkuskriptit:
 
-TÄHÄN
+<img width="208" alt="image" src="https://user-images.githubusercontent.com/111494018/206843259-953ea147-ef72-453c-89ff-72946484976e.png">
 
 Apachen init.sls:
 
-TÄHÄN
+<img width="197" alt="image" src="https://user-images.githubusercontent.com/111494018/206843277-9b95742b-33a5-4a9d-a306-fbb2d8665a1b.png">
 
-Minionikoneella 
- 
+Minionikoneella tein testejä. Palomuuri on toiminnassa ja halutut portit sallittu.
+
+    vagrant@minioni4:~$ sudo ufw status
+    Status: active
+
+    To                         Action      From
+    --                         ------      ----
+    80/tcp                     ALLOW       Anywhere
+    22/tcp                     ALLOW       Anywhere
+    4505/tcp                   ALLOW       Anywhere
+    4506/tcp                   ALLOW       Anywhere
+    80/tcp (v6)                ALLOW       Anywhere (v6)
+    22/tcp (v6)                ALLOW       Anywhere (v6)
+    4505/tcp (v6)              ALLOW       Anywhere (v6)
+    4506/tcp (v6)              ALLOW       Anywhere (v6)
+    
+Apachen oletussivu on päivittynyt, samoiten käyttäjän kotisivut.
+
+    vagrant@minioni4:~$ curl localhost
+    Hello world
+    vagrant@minioni4:~$ curl localhost/~vagrant/index.html
+    Hello World
+
 
 
 
