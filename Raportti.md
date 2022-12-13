@@ -253,19 +253,60 @@ Apachen oletussivu on päivittynyt, samoiten käyttäjän kotisivut.
 
 Lennosta vaihdoin tietokannaksi PostgreSQL, koska se on itselle tutumpi tietokanta. 
 Loin tälle oman postgresql-nimisen tilan Salttiin, jonka sisälle loin init.sls tiedoston. 
-Sinne määritin postgreSQL asentuvaksi pkg.installed funktioll.  
-
-INITSLS TIEDOSTON SISÄLTÖ TÄHÄN
-
+Sinne määritin postgreSQL asentuvaksi pkg.installed funktiolla.  
 Poistin postgresqln minionilta `sudo apt-get purge postgre*` ja ajoin postgresql tilan herralta minionille.
-
 Sain kuitenkin sellaisen ilmoituksen, mitä en osannut debugata. 
 
-FAIL TÄHÄN
+    vagrant@herra:/srv/salt$ sudo salt '*' state.apply postgresql
+    minioni4:
+    ----------
+              ID: postgresql
+        Function: pkg.installed
+          Result: False
+         Comment: An error was encountered while installing package(s): E: Release file for https://deb.debian.org/debian/dists/bullseye-updates/InRelease is not valid yet (invalid for another 2d 22h 21min 8s). Updates for this repository will not be applied.
+                  E: Release file for https://security.debian.org/debian-security/dists/bullseye-security/InRelease is not valid yet (invalid for another 2d 12h 1min 0s). Updates for this repository will not be applied.
+                  E: Release file for https://deb.debian.org/debian/dists/bullseye-backports/InRelease is not valid yet (invalid for another 2d 22h 21min 7s). Updates for this repository will not be applied.
+         Started: 09:52:22.990119
+        Duration: 2477.147 ms
+         Changes:
 
+    Summary for minioni4
+    ------------
+    Succeeded: 0
+    Failed:    1
+    ------------
+    Total states run:     1
+    Total run time:   2.477 s
+    ERROR: Minions returned with non-zero exit code
+    
 Päätin vaihtaa tietokantaa MariaDB:ksi, jotta saan jonkun tietokannan asennettua. 
 Poistin postgretilan, ja loin tilalle mariadb tilan. Sain kuitenkin samanlaisen ilmoituksen 
-kuin Postgren kohdalla. Sama ilmoitus tuli myös paikallisesti ajettaessa tilaa herralle. 
+kuin Postgren kohdalla. 
+
+    vagrant@herra:/srv/salt$ sudo salt '*' state.apply mariadb
+    minioni4:
+    ----------
+              ID: mariadb
+        Function: pkg.installed
+          Result: False
+         Comment: An error was encountered while installing package(s): E: Release file for https://deb.debian.org/debian/dists/bullseye-updates/InRelease is not valid yet (invalid for another 2d 22h 13min 39s). Updates for this repository will not be applied.
+                  E: Release file for https://security.debian.org/debian-security/dists/bullseye-security/InRelease is not valid yet (invalid for another 2d 11h 53min 31s). Updates for this repository will not be applied.
+                  E: Release file for https://deb.debian.org/debian/dists/bullseye-backports/InRelease is not valid yet (invalid for another 2d 22h 13min 38s). Updates for this repository will not be applied.
+         Started: 09:59:52.003715
+        Duration: 2127.755 ms
+         Changes:
+
+    Summary for minioni4
+    ------------
+    Succeeded: 0
+    Failed:    1
+    ------------
+    Total states run:     1
+    Total run time:   2.128 s
+    ERROR: Minions returned with non-zero exit code
+
+
+Sama ilmoitus tuli myös paikallisesti ajettaessa tilaa herralle. 
 Päätin tässä kohti Postgren asentumaan pelkästä alkuskriptista ilman muita konfiguraatioita.
 Poistin mariadb tilan.
 
@@ -292,14 +333,12 @@ Kaikki toimi!
 
 Koska tietokannan asennus tilana epäonnistui, päätin asentaa moduulissa python kielen tilana.
 Jotta voin tiloilla harjoitella myös top.sls käyttöä, joka ajaa useamman tilan samanaikaisesti.
-Eli loin Saltiin python tilan, ja sen init.sls tiedostoon määritin pkg.installed funktiolla asentavan python3 paketin.
+Eli loin Saltiin python nimisen tilan, ja sen init.sls tiedostoon määritin pkg.installed funktiolla asentavan python3 paketin.
 
-PYTHON TILA TÄHÄN
+<img width="149" alt="image" src="https://user-images.githubusercontent.com/111494018/207368107-c625f8f6-df38-417a-88ed-961c1f8c8ad2.png">
 
 Poistin minionkoneelta pythonin `sudo apt-get purge python*` ja 
-ajoin herralta python tilan minionille. Tilan ajo ei kuitenkaan onnistunut.
-
-ILMOITUS TÄHÄN
+ajoin herralta python tilan minionille. Tilan ajo ei kuitenkaan onnistunut. (Tästä unohdin ottaa heti kuvan/koodin talteen, ja kohta olinkin jo tuhonnut koko minion koneen, eli ei enää onnistunut sitä kaivaa esille.)
 
 Mitkään muutkaan tilanajot ei enää onnistunut, ja päättelin, että olin tuhonnut jo liikaa asioita.
 Herra ei enää saanut yhteyttä minioniin. Tein uuden virtuaalikoneen, ja salt-minionia asentaessa siihen tajusin asennusteksteistä,
@@ -307,9 +346,25 @@ että python2 asentuu automaattisesti sen yhteydessä. Salt-minion asennuksen j�
 Jätin kuitenkin luomani python tilan, jotta voin harjoitella top.sls tilan käyttöä apachen ja pythontilan kanssa.
 Testasinkin ajaa herralta python tilan minionille, ja sain ilmoituksen paketin olevan jo asennettu.
 
-PYTHON ASENNUS TILA TÄHÄN
+    vagrant@herra:/srv/salt/python$ sudo salt '*' state.apply python
+    minioni5:
+    ----------
+              ID: python3
+        Function: pkg.installed
+          Result: True
+         Comment: All specified packages are already installed
+         Started: 14:49:09.501680
+        Duration: 35.268 ms
+         Changes:
 
-## Muutokset Apacheen
+    Summary for minioni5
+    ------------
+    Succeeded: 1
+    Failed:    0
+    ------------
+    Total states run:     1
+    Total run time:  35.268 ms
+    ## Muutokset Apacheen
 
 Vaihdoin asennuksen tapahtumaan apachetilan init.sls tiedostoon pkg.installed funktiolla.
 Poistin asennuksen alkuskripteistä.
@@ -320,10 +375,116 @@ Halusin niputtaa yhteen apachen ja pythontilan, jotta voin harjoitella top.sls t
 Tällöin riittää ajaa vain yksi komento, joka asentaa molemmat tilat.
 Loin ensiksi saltiin tiedoston top.sls. Sen sisään määritin, että kun ajetaan kaikki '*', niin ajetaan apavhe ja pythontilat.
 
-TOPLSLS SISÄLTÖ TÄHÄN
+    vagrant@herra:/srv/salt$ sudo salt '*' state.apply
+    minioni5:
+    ----------
+              ID: apache2
+        Function: pkg.installed
+          Result: True
+         Comment: All specified packages are already installed
+         Started: 14:53:31.074731
+        Duration: 46.577 ms
+         Changes:
+    ----------
+              ID: /var/www/html/index.html
+        Function: file.managed
+          Result: True
+         Comment: File /var/www/html/index.html is in the correct state
+         Started: 14:53:31.127752
+        Duration: 20.349 ms
+         Changes:
+    ----------
+              ID: /etc/apache2/mods-enabled/userdir.conf
+        Function: file.symlink
+          Result: True
+         Comment: Symlink /etc/apache2/mods-enabled/userdir.conf is present and owned by root:root
+         Started: 14:53:31.148264
+        Duration: 1.794 ms
+         Changes:
+    ----------
+              ID: /etc/apache2/mods-enabled/userdir.load
+        Function: file.symlink
+          Result: True
+         Comment: Symlink /etc/apache2/mods-enabled/userdir.load is present and owned by root:root
+         Started: 14:53:31.150198
+        Duration: 2.065 ms
+         Changes:
+    ----------
+              ID: /home/vagrant/public_html
+        Function: file.recurse
+          Result: True
+         Comment: The directory /home/vagrant/public_html is in the correct state
+         Started: 14:53:31.152468
+        Duration: 78.373 ms
+         Changes:
+    ----------
+              ID: apache2.service
+        Function: service.running
+            Name: apache2
+          Result: True
+         Comment: The service apache2 is already running
+         Started: 14:53:31.233876
+        Duration: 66.224 ms
+         Changes:
+    ----------
+              ID: python3
+        Function: pkg.installed
+          Result: True
+         Comment: All specified packages are already installed
+         Started: 14:53:31.300491
+        Duration: 14.205 ms
+         Changes:
+
+    Summary for minioni5
+    ------------
+    Succeeded: 7
+    Failed:    0
+    ------------
+    Total states run:     7
+    Total run time: 229.587 ms
 
 Ajoin Saltista herralla pelkän `sudo salt '*' state.apply`, eli en määritellyt mitä tilaa ajetaan.
 Näin ollen se luki top.sls tiedostosta mitä halutaan ajaa.
 Apache ja python tilat molemmat ajettiin saman aikaisesti. Tosin muutoksia ei tullut, sillä molemmat olen jo erikseen ehtinyt testata.
 
+## Testiskriptit
 
+Lopuksi haluaisin vielä toteuttaa automaattiset testiskriptit, jotta tilojen ajojen jälkeen voi helposti testata, että kaikki on oikeasti asentunut niinkuin pitää. Loin siis saltiin testiskriptit tilan, jonka sisälle lähdin määrittämään mitä testauksia tehdään. Toteutuin tätä aika samalla tavalla kuin alkuskriptejä eli echolla kerrotaan mitä tapahtuu, ja skriptataan skriptit millä testataan. 
+
+<img width="377" alt="image" src="https://user-images.githubusercontent.com/111494018/207373580-6435d9ec-d113-4daf-ae19-4348a8f87273.png">
+
+Loin tilaan init.sls tiedoston, johon alkuskriptien tapaan määritin, että testiskriptitiedoston pitää asentua /usr/bin/ hakemistoon, jotta sitä voidaan bashin avulla ajaa mistä tahansa koneelta. 
+
+<img width="269" alt="image" src="https://user-images.githubusercontent.com/111494018/207373814-86319fb5-4454-47fc-b438-613d8628525e.png">
+
+Ajoin herralta testiskriptit tilan minionille ja minionilla testasin ajaa ne `bash testiskriptit.sh`. 
+   
+       vagrant@minioni5:~$ bash testiskriptit.sh
+        Testataan Apachen oletussivu
+        Hello world
+        Testataan käyttäjän kotisivut
+        Hello World
+        Testataan PostgreSQL asennus
+        psql: error: FATAL:  role "vagrant" does not exist
+        Mikäli sait ilmoituksen 'psql: error: FATAL: role vagrant does not exist', on PostgreSQL asentunut, mutta käyttäjää ei ole luotu.
+        Testataan python ohjelmointikieli
+        Python 3.9.2 (default, Feb 28 2021, 17:03:44)
+        [GCC 10.2.1 20210110] on linux
+        Type "help", "copyright", "credits" or "license" for more information.
+        >>>
+        
+Kaikki toimi niin kuin pitääkin. PostgeSQL on asennettu, mutta sinne ei pääse sisään, koska käyttäjää sinne ei ole luotuna.
+Python3 aukeaa terminaaliin, mutta suoraan näillä skripteillä ei voi siihen suorittaa testejä. Päätin vaihtaa niin, että echolla vain kerrotaan miten pythonia voi testata. Eli lopulliset skriptit ovat: 
+
+<img width="377" alt="image" src="https://user-images.githubusercontent.com/111494018/207373737-a41b25ca-f57b-4e31-a55b-d9c2df3a5653.png">
+
+## Moduulin lataaminen GitHubista
+
+Tein muutoksia alkuskripteihin, jotta niiden mukana latautuu myös salt-minion ja salt-master. 
+Jotta moduulin voi lataa sellaisenaan GitHubistani ja ajaa kaiken paikallisesti. 
+Eli, että väliin ei tarvitsisi minun herrakonettani.
+
+
+
+
+       
