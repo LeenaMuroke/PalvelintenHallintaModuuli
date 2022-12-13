@@ -558,7 +558,9 @@ Tilojen ajon jälkeen tein testiskriptit `bash testiskriptit.sh`. Apachen sivut 
 
 <img width="320" alt="image" src="https://user-images.githubusercontent.com/111494018/207386551-a61d1085-c9dd-459c-a7ce-897ab76461d3.png">
 
+## Lopullisen asennustiedostot moduuliin
 
+Viimeisimmät versiot olen ladannut versionhallinnalla tänne GitHubiin. Eli skriptitiedostot ja Salt tiedostot löytyvät samasta reposta kuin tämä raportti https://github.com/LeenaMuroke/PalvelintenHallintaModuuli/
 
 
 
