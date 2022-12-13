@@ -478,11 +478,86 @@ Python3 aukeaa terminaaliin, mutta suoraan näillä skripteillä ei voi siihen s
 
 <img width="377" alt="image" src="https://user-images.githubusercontent.com/111494018/207373737-a41b25ca-f57b-4e31-a55b-d9c2df3a5653.png">
 
-## Moduulin lataaminen GitHubista
+Lisäsin vielä tulimuurin testauksen mukaan skripteihin.
 
-Tein muutoksia alkuskripteihin, jotta niiden mukana latautuu myös salt-minion ja salt-master. 
-Jotta moduulin voi lataa sellaisenaan GitHubistani ja ajaa kaiken paikallisesti. 
-Eli, että väliin ei tarvitsisi minun herrakonettani.
+<img width="179" alt="image" src="https://user-images.githubusercontent.com/111494018/207381879-fe583fe2-ae15-46d7-b4a4-689f892acb39.png">
+
+
+## Kaiken testaaminen tyhjällä koneella
+
+Loin Vagrantilla vielä yhden uuden virtuaalikoneen minion6, jotta voin kaiken testata puhtaalta pöydältä. 
+Ajoin minionille valmiiksi alkuskriptit ja testiskriptit `sudo salt '*' state.apply alkuskriptit` ja `sudo salt '*' state.apply testiskriptit`. Nämä kun ei itsessään tee vielä mitään, ennen kuin skriptit ajetaan koneella bashin avulla. Molemmat asentuivat Saltin mukaan koneelle.
+
+<img width="325" alt="image" src="https://user-images.githubusercontent.com/111494018/207381055-f0ed058e-c98d-4121-9717-e0e6d12c64d4.png">
+
+<img width="317" alt="image" src="https://user-images.githubusercontent.com/111494018/207381169-2b827d40-e71d-4843-9d1f-4a2669dab033.png">
+
+Seuraavaksi minionkoneella ajoin alkuskritptit `bash alkuskriptit.sh`. 
+Yritin ajaa top.sls `sudo salt '*' state.apply`, mutta sain ilmoituksen:
+
+<img width="407" alt="image" src="https://user-images.githubusercontent.com/111494018/207385244-76b5439f-a2c1-4aef-8135-8ed306d0c96d.png">
+
+Tähän kuitenkin auttoi, kun käynnistin minionin uudestaan `sudo systemctl restart salt-minion`.
+Tilan ajo ei kuitenkaan onnistunut. Sain tilat kuitenkin ajettua erikseen `sudo salt '*' state.apply apache` ja `sudo salt '*' state.apply python`. Molemmista sain kuitenkin ilmoitukset, että kaikki on jo oikeassa jamassa. Eli vissiin oli jo aiemmin ajot onnistunut silti.
+
+              ID: /var/www/html/index.html
+        Function: file.managed
+          Result: True
+         Comment: File /var/www/html/index.html is in the correct state
+         Started: 16:13:34.339245
+        Duration: 16.044 ms
+         Changes:
+    ----------
+              ID: /etc/apache2/mods-enabled/userdir.conf
+        Function: file.symlink
+          Result: True
+         Comment: Symlink /etc/apache2/mods-enabled/userdir.conf is present and owned by root:root
+         Started: 16:13:34.355390
+        Duration: 1.534 ms
+         Changes:
+    ----------
+              ID: /etc/apache2/mods-enabled/userdir.load
+        Function: file.symlink
+          Result: True
+         Comment: Symlink /etc/apache2/mods-enabled/userdir.load is present and owned by root:root
+         Started: 16:13:34.357000
+        Duration: 1.245 ms
+         Changes:
+    ----------
+              ID: /home/vagrant/public_html
+        Function: file.recurse
+          Result: True
+         Comment: The directory /home/vagrant/public_html is in the correct state
+         Started: 16:13:34.358325
+        Duration: 64.437 ms
+         Changes:
+    ----------
+              ID: apache2.service
+        Function: service.running
+            Name: apache2
+          Result: True
+         Comment: The service apache2 is already running
+         Started: 16:13:34.424607
+        Duration: 64.417 ms
+         Changes:
+
+    Summary for minioni6
+
+    vagrant@herra:/srv/salt/alkuskriptit$ sudo salt '*' state.apply python
+    minioni6:
+    ----------
+              ID: python3
+        Function: pkg.installed
+          Result: True
+         Comment: All specified packages are already installed
+         Started: 16:13:43.760775
+        Duration: 63.491 ms
+         Changes:
+
+Tilojen ajon jälkeen tein testiskriptit `bash testiskriptit.sh`. Apachen sivut toimii, PostgreSQL on asennettuna ja tulimuuri mallillaan.
+
+<img width="289" alt="image" src="https://user-images.githubusercontent.com/111494018/207386233-ef78c904-309e-465d-b3f3-469849a73635.png">
+
 
 
 
