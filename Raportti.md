@@ -22,6 +22,7 @@ Moduulia tullaan ajamaan Saltin avulla herra ja minionkoneiden välillä.
 Eli moduuli asentaa tarvittavat välineet aloittaa tekemään omia koodaustehtäviä. 
 Valitsin tämän, sillä koen tästä olevan itselle hyötyä omiin projekteihini. 
 Lisäksi tässä on sopivan verran tuttua mutta myös uutta haastetta.
+Lisäksi asennan kaikkea muuta matkan varrella tullutta tarpeellista ohjelmaa.
 
 ## Alkutilanne
 
