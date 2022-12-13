@@ -556,7 +556,7 @@ Tilan ajo ei kuitenkaan onnistunut. Sain tilat kuitenkin ajettua erikseen `sudo 
 
 Tilojen ajon jälkeen tein testiskriptit `bash testiskriptit.sh`. Apachen sivut toimii, PostgreSQL on asennettuna ja tulimuuri mallillaan.
 
-<img width="289" alt="image" src="https://user-images.githubusercontent.com/111494018/207386233-ef78c904-309e-465d-b3f3-469849a73635.png">
+<img width="320" alt="image" src="https://user-images.githubusercontent.com/111494018/207386551-a61d1085-c9dd-459c-a7ce-897ab76461d3.png">
 
 
 
