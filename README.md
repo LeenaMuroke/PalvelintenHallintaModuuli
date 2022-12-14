@@ -23,7 +23,7 @@ ja ajaa tiloja paikallisesti.
 
 3. Testaa asennetut ohjelmat ja paketit ajamalla testiskriptit `bash testiskriptit.sh`
 
-<img width="319" alt="image" src="https://user-images.githubusercontent.com/111494018/207536673-7b602fa4-55ad-4717-8246-5baa1f09570d.png">
+<img width="421" alt="image" src="https://user-images.githubusercontent.com/111494018/207537135-57882ece-1806-4f65-acac-abf08ec28571.png">
 
 ## Moduulin teko 
 
